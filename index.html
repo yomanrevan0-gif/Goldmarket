@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pasar Emas - Harga Emas Dunia</title>
+
+  <meta
+    name="description"
+    content="Pantau harga emas dunia secara real-time."
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #0b0f14;
+      color: #f5f5f5;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid #242b34;
+      background: #0f141b;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .navbar {
+      max-width: 1200px;
+      margin: auto;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 21px;
+      font-weight: bold;
+    }
+
+    .gold-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #111;
+      font-weight: bold;
+    }
+
+    .status {
+      font-size: 12px;
+      color: #8e9aaa;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 30px 20px 60px;
+    }
+
+    .hero {
+      margin-bottom: 25px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: #8e9aaa;
+    }
+
+    .price-card {
+      background: linear-gradient(145deg, #141a22, #10151c);
+      border: 1px solid #29313c;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+
+    .coin-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .coin-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffe680, #d4a72c);
+      color: #191919;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    .coin-title h2 {
+      font-size: 20px;
+    }
+
+    .coin-title span {
+      color: #8994a3;
+      font-size: 13px;
+    }
+
+    .price {
+      font-size: 42px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .change {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .green {
+      color: #25c281;
+    }
+
+    .red {
+      color: #ff5c70;
+    }
+
+    .muted {
+      color: #8994a3;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .stat {
+      background: #11171f;
+      border: 1px solid #29313c;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .stat-label {
+      color: #8994a3;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 19px;
+      font-weight: bold;
+    }
+
+    .chart-card {
+      background: #11171f;
+      border: 1px solid #29313c;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 20px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-header h3 {
+      font-size: 18px;
+    }
+
+    .live {
+      font-size: 12px;
+      color: #25c281;
+    }
+
+    .chart {
+      height: 220px;
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      padding: 15px 0;
+      border-bottom: 1px solid #29313c;
+      overflow: hidden;
+    }
+
+    .bar {
+      flex: 1;
+      min-width: 4px;
+      background: linear-gradient(to top, #b8860b, #ffd700);
+      border-radius: 3px 3px 0 0;
+      opacity: 0.85;
+    }
+
+    .info {
+      background: #11171f;
+      border: 1px solid #29313c;
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .info h3 {
+      margin-bottom: 15px;
+    }
+
+    .info p {
+      color: #8994a3;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #687383;
+      font-size: 12px;
+      border-top: 1px solid #242b34;
+    }
+
+    .loading {
+      color: #8994a3;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .price {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 22px 14px 45px;
+      }
+
+      .navbar {
+        padding: 15px;
+      }
+
+      .hero h1 {
+        font-size: 27px;
+      }
+
+      .price-card {
+        padding: 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 15px;
+      }
+
+      .stat-value {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <nav class="navbar">
+
+    <div class="logo">
+      <div class="gold-icon">Au</div>
+      <span>Pasar Emas</span>
+    </div>
+
+    <div class="status" id="status">
+      Menghubungkan...
+    </div>
+
+  </nav>
+</header>
+
+
+<main class="container">
+
+  <section class="hero">
+
+    <h1>Harga Emas Dunia</h1>
+
+    <p>
+      Pantau harga emas secara real-time.
+    </p>
+
+  </section>
+
+
+  <section class="price-card">
+
+    <div class="coin-title">
+
+      <div class="coin-logo">
+        Au
+      </div>
+
+      <div>
+        <h2>Gold / USD</h2>
+        <span>XAU · Emas</span>
+      </div>
+
+    </div>
+
+
+    <div class="price" id="price">
+      Memuat...
+    </div>
+
+    <div class="change" id="change">
+      —
+    </div>
+
+  </section>
+
+
+  <section class="grid">
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Harga per Troy Ounce
+      </div>
+
+      <div class="stat-value" id="ounce">
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Harga per Gram
+      </div>
+
+      <div class="stat-value" id="gram">
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Pembaruan
+      </div>
+
+      <div class="stat-value" id="updated">
+        —
+      </div>
+
+    </div>
+
+
+    <div class="stat">
+
+      <div class="stat-label">
+        Status
+      </div>
+
+      <div class="stat-value green" id="connection">
+        —
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="chart-card">
+
+    <div class="chart-header">
+
+      <h3>Pergerakan Harga</h3>
+
+      <span class="live">
+        ● LIVE
+      </span>
+
+    </div>
+
+    <div class="chart" id="chart">
+
+      <div class="loading">
+        Menunggu data...
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="info">
+
+    <h3>Tentang Pasar Emas</h3>
+
+    <p>
+      Pasar Emas adalah platform informasi harga emas yang
+      membantu pengguna memantau harga emas dunia dengan
+      tampilan sederhana dan mudah digunakan.
+    </p>
+
+    <br>
+
+    <p>
+      Harga yang ditampilkan menggunakan data XAU (Gold)
+      dalam mata uang USD per troy ounce.
+    </p>
+
+  </section>
+
+</main>
+
+
+<footer>
+
+  Pasar Emas © 2026
+
+</footer>
+
+
+<script>
+
+  const API_URL =
+    "https://api.gold-api.com/price/XAU";
+
+
+  let priceHistory = [];
+
+
+  function formatUSD(value) {
+
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value);
+
+  }
+
+
+  function formatNumber(value) {
+
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(value);
+
+  }
+
+
+  async function getGoldPrice() {
+
+    try {
+
+      const response = await fetch(API_URL);
+
+      if (!response.ok) {
+        throw new Error("API error");
+      }
+
+      const data = await response.json();
+
+      console.log("Data emas:", data);
+
+
+      /*
+        Gold API mengembalikan harga XAU.
+      */
+
+      const price =
+        Number(data.price);
+
+
+      if (!price || isNaN(price)) {
+        throw new Error("Harga tidak ditemukan");
+      }
+
+
+      updatePage(price);
+
+
+      document.getElementById("status").textContent =
+        "● Online";
+
+      document.getElementById("status").style.color =
+        "#25c281";
+
+      document.getElementById("connection").textContent =
+        "Terhubung";
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      document.getElementById("price").textContent =
+        "Gagal mengambil data";
+
+      document.getElementById("status").textContent =
+        "Offline";
+
+      document.getElementById("status").style.color =
+        "#ff5c70";
+
+      document.getElementById("connection").textContent =
+        "Gagal";
+
+    }
+
+  }
+
+
+  function updatePage(price) {
+
+    /*
+      1 troy ounce = 31.1034768 gram
+    */
+
+    const gramPrice =
+      price / 31.1034768;
+
+
+    priceHistory.push(price);
+
+
+    if (priceHistory.length > 40) {
+      priceHistory.shift();
+    }
+
+
+    document.getElementById("price").textContent =
+      formatUSD(price);
+
+
+    document.getElementById("ounce").textContent =
+      formatUSD(price);
+
+
+    document.getElementById("gram").textContent =
+      formatUSD(gramPrice);
+
+
+    document.getElementById("updated").textContent =
+      new Date().toLocaleTimeString("id-ID");
+
+
+    /*
+      Perubahan sementara berdasarkan
+      data pengambilan sebelumnya.
+    */
+
+    if (priceHistory.length >= 2) {
+
+      const previous =
+        priceHistory[priceHistory.length - 2];
+
+      const difference =
+        price - previous;
+
+      const percentage =
+        (difference / previous) * 100;
+
+
+      const changeElement =
+        document.getElementById("change");
+
+
+      const sign =
+        difference >= 0 ? "+" : "";
+
+
+      changeElement.textContent =
+        sign +
+        formatNumber(difference) +
+        " USD (" +
+        sign +
+        formatNumber(percentage) +
+        "%)";
+
+
+      changeElement.className =
+        difference >= 0
+          ? "change green"
+          : "change red";
+
+    } else {
+
+      document.getElementById("change").textContent =
+        "Menunggu perubahan...";
+
+    }
+
+
+    drawChart();
+
+  }
+
+
+  function drawChart() {
+
+    const chart =
+      document.getElementById("chart");
+
+
+    chart.innerHTML = "";
+
+
+    if (priceHistory.length === 0) {
+      return;
+    }
+
+
+    const min =
+      Math.min(...priceHistory);
+
+
+    const max =
+      Math.max(...priceHistory);
+
+
+    const range =
+      max - min || 1;
+
+
+    priceHistory.forEach(price => {
+
+      const bar =
+        document.createElement("div");
+
+
+      bar.className =
+        "bar";
+
+
+      const height =
+        20 +
+        ((price - min) / range) * 80;
+
+
+      bar.style.height =
+        height + "%";
+
+
+      chart.appendChild(bar);
+
+    });
+
+  }
+
+
+  /*
+    Ambil harga ketika halaman dibuka.
+  */
+
+  getGoldPrice();
+
+
+  /*
+    Perbarui harga setiap 30 detik.
+  */
+
+  setInterval(
+    getGoldPrice,
+    30000
+  );
+
+</script>
+
+</body>
+</html>
